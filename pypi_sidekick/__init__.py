@@ -1,2 +1,0 @@
-def packageDirectory(package):
-    pass

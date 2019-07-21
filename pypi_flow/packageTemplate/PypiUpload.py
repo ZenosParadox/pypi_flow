@@ -2,7 +2,7 @@
 from grtoolkit.PYPI import Upload2Pypi
 Upload2Pypi()
 
-packageName = "pypi_flow"
+packageName = "$package-name$"
 #UPDATE LOCATE PACKAGE TO LATEST VER ON PYPI
 from grtoolkit.Windows import cmd
 install_package = f'pip install --upgrade {packageName} --user'
