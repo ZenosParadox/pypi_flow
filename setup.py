@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pypi-sidekick",
-    version="19.7.1",
+    name="pypi_sidekick",
+    version="19.07.0",
     author="Gabriel Rosales",
     author_email="gabriel.alejandro.rosales@gmail.com",
     description="Project Management tools for quickly creating and maintaining PYPI packages.",
