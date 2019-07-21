@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pypi_flow",
-    version="19.07.15",
+    version="19.07.16",
     author="Gabriel Rosales",
     author_email="gabriel.alejandro.rosales@gmail.com",
     description="Project Management tools for quickly creating and maintaining PYPI packages.",
