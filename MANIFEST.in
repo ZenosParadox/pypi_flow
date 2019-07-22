@@ -1,1 +1,2 @@
 recursive-include pypi_flow/packageTemplate/ *
+recursive-include pypi_flow/packageTemplate/package_name *
