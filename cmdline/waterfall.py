@@ -13,3 +13,5 @@ year = datetime.datetime.now().year
 
 projectFolder = grt.cwd()
 templateSource = packageDir("pypi_flow") + "\\packageTemplate"
+
+print(projectFolder)
