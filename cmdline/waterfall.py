@@ -15,3 +15,6 @@ projectFolder = grt.cwd()
 templateSource = packageDir("pypi_flow") + "\\packageTemplate"
 
 print(projectFolder)
+
+import sys
+print(sys.argv[1])
