@@ -17,7 +17,16 @@ def filesInFolder(folder, fileType="*"):  # Returns list of files of specified f
                 file_list.append(dirpath + '\\' + file)
     return file_list
 
-print("\nWelcome to the pypi_flow project creator!\nA project will be created in this directory based on the following information:\n")
+def LicenseCheck(licenseType):
+    if licenseType == "":
+        licenseType = "0"
+    try:
+        return LicenseDict[licenseType]
+    except:
+            print("Error: Invalid licence entry. Aborting project.")
+            exit()
+
+print("\n\nWelcome to the pypi_flow project creator!\n\nA project will be created in this directory based on the following information:\n")
 
 projectFolder = os.getcwd() 
 templateSource = packageDir("pypi_flow") + "\\packageTemplate"
@@ -30,6 +39,21 @@ email = input("contact email: ")
 url = input("project website: ")
 year = str(datetime.datetime.now().year)
 
+
+LicenseDict = {
+    "0":"MIT",
+}
+
+print("\nSupported project license types:")
+for k,v in LicenseDict.items():
+    if k == "0":
+        print(f"{k}) {v} (Default)")
+    else:
+        print(f"{k}) {v}")
+
+project_license = LicenseCheck(input('\nProceed with: '))
+print(f"{project_license}\n")
+
 #REPLACEMENT WORDS DICTIONARY
 projectDictionary = {
     "$package-name$":packageName,
@@ -40,100 +64,36 @@ projectDictionary = {
     "$year$":year,
 }
 
-#COPY FILES
+#CREATE DIRS TO COPY INTO
 packageRoot = projectFolder + f"\\{packageName}"
 packageFolder = packageRoot + f"\\{packageName}"
+cmdlineFolder = packageRoot + f"\\cmdline"
 os.makedirs(packageRoot)
 os.makedirs(packageFolder)
+os.makedirs(cmdlineFolder)
 
-#MAKE FUNCTION TO COPY ALL FILES IN FOLDER
-shutil.copyfile(templateSource + '\\PypiUpload.py', packageRoot + '\\PypiUpload.py')
-shutil.copyfile(templateSource + '\\setup.py', packageRoot + '\\setup.py')
+#COPY ALL FILES IN FOLDER - CANNOT USE SHUTIL.COPY(folder) SINCE IT COPIES PERMISSIONS FROM SITE-PACKAGES AND CAUSES ISSUES
+tocopyfilelist = filesInFolder(templateSource)
+for file in tocopyfilelist:
+    try:
+        if "pycache" in  file:
+            pass
+        else:
+            shutil.copyfile(file,f"{packageRoot}{file[len(templateSource):]}")
+    except:
+        # print(f"ERROR COPYING: {packageRoot}{file[len(templateSource):]}")
+        pass
+
+#COPY LICENSE AND PACKAGE __init__.py individually
 shutil.copyfile(templateSource + '\\package_name\\__init__.py', packageFolder + '\\__init__.py')
-#MISSING COPYING LICENSE
+licenceTemplateFolder = templateSource + '\\LicenseTemplates'
+shutil.copyfile(f'{licenceTemplateFolder}\\{project_license}.txt',f"{packageRoot}\\LICENSE")
 
+
+#REPLACE KEY WORDS IN COPIED TEMPLATES
 filelist = filesInFolder(packageRoot)
-
 for file in filelist:
     tempfile = grt.Storage.File(file)
     content = tempfile.read()
     content = grt.File.replaceWords(content, projectDictionary)
     tempfile.write(content)
-    
-
-
-# import datetime, sys, os, shutil, re
-# import grtoolkit as grt
-# from grtoolkit.Python import packageDir
-
-# def delDotPrefix(string):
-#     '''Delete dot prefix to file extension if present'''
-#     return string[1:] if string.find(".") == 0 else string
-
-# def filesInFolder(folder, fileType="*"):  # Returns list of files of specified file type
-#     fileType = delDotPrefix(fileType)
-#     file_regex = re.compile(rf".*\.{fileType}", re.IGNORECASE)  # Regular Expression; dot star means find everything
-#     file_list = []
-#     for dirpath, _, filenames in os.walk(folder,):  # for each folder
-#         for file in filenames:
-#             file_search = file_regex.findall(file)
-#             if file_search:  # if file_search is not empty
-#                 file_list.append(dirpath + '\\' + file)
-#     return file_list
-
-# print("\nWelcome to the pypi_flow project creator!\nA project will be created in this directory based on the following information:\n")
-
-# try:
-#     projectFolder = sys.argv[1]
-#     templateSource = packageDir("pypi_flow") + "\\packageTemplate"
-#     # print(projectFolder)
-# except IndexError:
-#     print(r'''
-#     Error: Python did not receive a directory argument upon being called.
-#     Try adding %* to the end of the Registry Key [HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command]\n
-#     ''')
-#     exit()
-
-# #COLLECT PROJECT INPUT FROM USER
-# packageName = input("package name: ")
-# author = input("author: ")
-# description = input("project description: ")
-# email = input("contact email: ")
-# url = input("project website: ")
-# year = str(datetime.datetime.now().year)
-
-# #REPLACEMENT WORDS DICTIONARY
-# projectDictionary = {
-#     "$package-name$":packageName,
-#     "$author$":author,
-#     "$description$":description,
-#     "$email$":email,
-#     "$url$":url,
-#     "$year$":year,
-# }
-
-# print(projectDictionary)
-
-# #COPY FILES
-# packageRoot = projectFolder + f"\\{packageName}"
-# packageFolder = packageRoot + f"\\{packageName}"
-# os.makedirs(packageRoot)
-# os.makedirs(packageFolder)
-# shutil.copyfile(templateSource + '\\PypiUpload.py', packageRoot + '\\PypiUpload.py')
-# shutil.copyfile(templateSource + '\\setup.py', packageRoot + '\\setup.py')
-# shutil.copyfile(templateSource + '\\__init__.py', packageRoot + '\\__init__.py')
-# shutil.copyfile(templateSource + '\\package_name\\__init__.py', packageFolder + '\\__init__.py')
-# #MISSING COPYING LICENSE
-
-# filelist = filesInFolder(packageRoot)
-
-# print(filelist)
-
-# for file in filelist:
-#     tempfile = grt.Storage.File(file)
-#     content = tempfile.read()
-#     print(content)
-#     content = grt.File.replaceWords(content, projectDictionary)
-#     print(content)
-#     tempfile.write(content)
-    
