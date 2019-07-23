@@ -46,7 +46,7 @@ LicenseDict = {
 
 print("\nSupported project license types:")
 for k,v in LicenseDict.items():
-    if k == "0":
+    if v == "MIT":
         print(f"{k}) {v} (Default)")
     else:
         print(f"{k}) {v}")
