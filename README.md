@@ -37,8 +37,8 @@ A project template will be created in accordance with the specifications provide
     │   README.md
     │   setup.py
     └───package_name
-        ├── __init__.py             #Import your code to this file.
-        └──...ADD YOUR CODE HERE
+        ├── __init__.py             #Add import references to your python code files here
+        └──...ADD YOUR PYTHON CODE FILES HERE
 
 For additional changes and functionality provided beyond this template, please see setuptools documentation: https://setuptools.readthedocs.io/en/latest/setuptools.html
 
