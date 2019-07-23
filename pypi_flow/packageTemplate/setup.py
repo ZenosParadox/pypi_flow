@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="$package-name$",
-    version="0.0.0",
+    version="19.07.0",
     author="$author$",
     author_email="$email$",
     description="$description$",

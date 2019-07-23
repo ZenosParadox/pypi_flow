@@ -19,16 +19,8 @@ def filesInFolder(folder, fileType="*"):  # Returns list of files of specified f
 
 print("\nWelcome to the pypi_flow project creator!\nA project will be created in this directory based on the following information:\n")
 
-try:
-    projectFolder = sys.argv[1]
-    templateSource = packageDir("pypi_flow") + "\\packageTemplate"
-    # print(projectFolder)
-except IndexError:
-    print(r'''
-    Error: Python did not receive a directory argument upon being called.
-    Try adding %* to the end of the Registry Key [HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command]\n
-    ''')
-    exit()
+projectFolder = os.getcwd() 
+templateSource = packageDir("pypi_flow") + "\\packageTemplate"
 
 #COLLECT PROJECT INPUT FROM USER
 packageName = input("package name: ")
@@ -53,9 +45,10 @@ packageRoot = projectFolder + f"\\{packageName}"
 packageFolder = packageRoot + f"\\{packageName}"
 os.makedirs(packageRoot)
 os.makedirs(packageFolder)
+
+#MAKE FUNCTION TO COPY ALL FILES IN FOLDER
 shutil.copyfile(templateSource + '\\PypiUpload.py', packageRoot + '\\PypiUpload.py')
 shutil.copyfile(templateSource + '\\setup.py', packageRoot + '\\setup.py')
-shutil.copyfile(templateSource + '\\__init__.py', packageRoot + '\\__init__.py')
 shutil.copyfile(templateSource + '\\package_name\\__init__.py', packageFolder + '\\__init__.py')
 #MISSING COPYING LICENSE
 
