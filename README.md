@@ -4,7 +4,7 @@ Create and upload new packages to PyPI within seconds.
 Available on [PyPI](https://pypi.org/project/pypi-flow/). Tested on Windows 10.
 
 ## Installation
-pypi-flow can be simply installed by running:
+pypi-flow can installed using the folling command on your terminal:
 
     pip install pypi_flow
 
@@ -30,15 +30,17 @@ A project template will be created in accordance with the specifications provide
 
     package_root
     │   .gitignore
-    │   MANIFEST.in                 #File names added to this file will be included in the site-packages folder 
+    │   MANIFEST.in                 #File names added to this file will be included in the  
     │   LICENSE
     │   PipLocalUpgrade.py
     │   PypiUpload.py
     │   README.md
     │   setup.py
+    │───cmdline
+    │   └──...ADD CODE FILES HERE TO BE CALLED AS COMMAND LINE PROGRAMS
     └───package_name
         ├── __init__.py             #Add import references to your python code files here
-        └──...ADD YOUR PYTHON CODE FILES HERE
+        └──...ADD YOUR PYTHON CODE FILES HERE TO BE USED FROM THE PYTHON INTERPRETER UPON IMPORT
 
 For additional changes and functionality provided beyond this template, please see setuptools documentation: https://setuptools.readthedocs.io/en/latest/setuptools.html
 
@@ -54,6 +56,6 @@ Provide your PyPI account credentials when asked and enjoy the show!
 
 ### That was easy!
 
-You packages should automatically install/upgrade from the PyPI website. 
+Your packages should automatically install/upgrade from the PyPI website. 
 
 Using speedy workflows and functional templates let you focus more on what matters: your code's functionality!
