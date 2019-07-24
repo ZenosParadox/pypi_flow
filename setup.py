@@ -24,7 +24,7 @@ def filesInFolder(folder, fileType):  # Returns list of files of specified file 
 
 setuptools.setup(
     name="pypi_flow",
-    version="19.07.46",
+    version="19.07.51",
     author="Gabriel Rosales",
     author_email="gabriel.alejandro.rosales@gmail.com",
     description="Create and upload new packages to PyPI within seconds.",

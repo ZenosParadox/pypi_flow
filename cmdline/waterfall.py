@@ -6,7 +6,8 @@ def delDotPrefix(string):
     '''Delete dot prefix to file extension if present'''
     return string[1:] if string.find(".") == 0 else string
 
-def filesInFolder(folder, fileType="*"):  # Returns list of files of specified file type
+def filesInFolder(folder, fileType="*"):  
+    '''Returns list of files of specified file type'''
     fileType = delDotPrefix(fileType)
     file_regex = re.compile(rf".*\.{fileType}", re.IGNORECASE)  # Regular Expression; dot star means find everything
     file_list = []
@@ -19,19 +20,24 @@ def filesInFolder(folder, fileType="*"):  # Returns list of files of specified f
 
 def LicenseCheck(licenseType):
     if licenseType == "":
-        licenseType = "0"
+        #Find default option listed in License Dictionary
+        for k,v in LicenseDict.items(): 
+            if "MIT" in v:  #DEFAULT SELECTION
+                licenseType = k
     try:
         return LicenseDict[licenseType]
     except:
-            print("Error: Invalid licence entry. Aborting project.")
-            exit()
+        print("Error: Invalid licence entry. Aborting project.")
+        exit()
 
+# UI
 print("\n\nWelcome to the pypi_flow project creator!\n\nA project will be created in this directory based on the following information:\n")
 
 projectFolder = os.getcwd() 
 templateSource = packageDir("pypi_flow") + "\\packageTemplate"
+licenceTemplateFolder = templateSource + '\\LicenseTemplates'
 
-#COLLECT PROJECT INPUT FROM USER
+# COLLECT PROJECT INPUT FROM USER
 packageName = input("package name: ")
 author = input("author: ")
 description = input("project description: ")
@@ -39,10 +45,13 @@ email = input("contact email: ")
 url = input("project website: ")
 year = str(datetime.datetime.now().year)
 
-
-LicenseDict = {
-    "0":"MIT",
-}
+LicenceFiles = filesInFolder(licenceTemplateFolder)
+LicenseDict = {"0":"None",}
+i = 1
+for file in LicenceFiles:
+    tempfilename = grt.File.directoryLastValue(file).split(".")[0]
+    LicenseDict[str(i)] = tempfilename
+    i+=1
 
 print("\nSupported project license types:")
 for k,v in LicenseDict.items():
@@ -54,7 +63,7 @@ for k,v in LicenseDict.items():
 project_license = LicenseCheck(input('\nProceed with: '))
 print(f"{project_license}\n")
 
-#REPLACEMENT WORDS DICTIONARY
+# REPLACEMENT WORDS DICTIONARY
 projectDictionary = {
     "$package-name$":packageName,
     "$author$":author,
@@ -64,7 +73,7 @@ projectDictionary = {
     "$year$":year,
 }
 
-#CREATE DIRS TO COPY INTO
+# CREATE DIRS TO COPY INTO
 packageRoot = projectFolder + f"\\{packageName}"
 packageFolder = packageRoot + f"\\{packageName}"
 cmdlineFolder = packageRoot + f"\\cmdline"
@@ -72,7 +81,7 @@ os.makedirs(packageRoot)
 os.makedirs(packageFolder)
 os.makedirs(cmdlineFolder)
 
-#COPY ALL FILES IN FOLDER - CANNOT USE SHUTIL.COPY(folder) SINCE IT COPIES PERMISSIONS FROM SITE-PACKAGES AND CAUSES ISSUES
+# COPY ALL FILES IN FOLDER - CANNOT USE SHUTIL.COPY(folder) SINCE IT COPIES PERMISSIONS FROM SITE-PACKAGES AND CAUSES ISSUES
 tocopyfilelist = filesInFolder(templateSource)
 for file in tocopyfilelist:
     try:
@@ -81,16 +90,15 @@ for file in tocopyfilelist:
         else:
             shutil.copyfile(file,f"{packageRoot}{file[len(templateSource):]}")
     except:
-        # print(f"ERROR COPYING: {packageRoot}{file[len(templateSource):]}")
         pass
 
-#COPY LICENSE AND PACKAGE __init__.py individually
+# COPY LICENSE AND PACKAGE __init__.py individually
 shutil.copyfile(templateSource + '\\package_name\\__init__.py', packageFolder + '\\__init__.py')
-licenceTemplateFolder = templateSource + '\\LicenseTemplates'
-shutil.copyfile(f'{licenceTemplateFolder}\\{project_license}.txt',f"{packageRoot}\\LICENSE")
+if project_license != "None":
+    shutil.copyfile(f'{licenceTemplateFolder}\\{project_license}.txt',f"{packageRoot}\\LICENSE")
 
 
-#REPLACE KEY WORDS IN COPIED TEMPLATES
+# REPLACE KEY WORDS IN COPIED TEMPLATES
 filelist = filesInFolder(packageRoot)
 for file in filelist:
     tempfile = grt.Storage.File(file)

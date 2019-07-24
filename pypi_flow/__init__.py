@@ -2,4 +2,4 @@
 # Initializes package upon import call from python
 #
 # ex. 
-# import other_python_file
+# import package_name.other_python_file
