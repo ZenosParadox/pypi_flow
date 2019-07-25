@@ -1,22 +1,5 @@
-import datetime, sys, os, shutil, re
-import grtoolkit as grt
-from grtoolkit.Python import packageDir
-
-def delDotPrefix(string):
-    '''Delete dot prefix to file extension if present'''
-    return string[1:] if string.find(".") == 0 else string
-
-def filesInFolder(folder, fileType="*"):  
-    '''Returns list of files of specified file type'''
-    fileType = delDotPrefix(fileType)
-    file_regex = re.compile(rf".*\.{fileType}", re.IGNORECASE)  # Regular Expression; dot star means find everything
-    file_list = []
-    for dirpath, _, filenames in os.walk(folder,):  # for each folder
-        for file in filenames:
-            file_search = file_regex.findall(file)
-            if file_search:  # if file_search is not empty
-                file_list.append(dirpath + '\\' + file)
-    return file_list
+import datetime, sys, os, shutil
+from pypi_flow import delDotPrefix, filesInFolder, directoryLastValue, File, replaceWords, packageDir
 
 def LicenseCheck(licenseType):
     if licenseType == "":
@@ -49,7 +32,7 @@ LicenceFiles = filesInFolder(licenceTemplateFolder)
 LicenseDict = {"0":"None",}
 i = 1
 for file in LicenceFiles:
-    tempfilename = grt.File.directoryLastValue(file).split(".")[0]
+    tempfilename = directoryLastValue(file).split(".")[0]
     LicenseDict[str(i)] = tempfilename
     i+=1
 
@@ -101,7 +84,7 @@ if project_license != "None":
 # REPLACE KEY WORDS IN COPIED TEMPLATES
 filelist = filesInFolder(packageRoot)
 for file in filelist:
-    tempfile = grt.Storage.File(file)
+    tempfile = File(file)
     content = tempfile.read()
-    content = grt.File.replaceWords(content, projectDictionary)
+    content = replaceWords(content, projectDictionary)
     tempfile.write(content)
