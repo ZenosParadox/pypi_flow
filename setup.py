@@ -24,7 +24,7 @@ def filesInFolder(folder, fileType):  # Returns list of files of specified file 
 
 setuptools.setup(
     name="pypi_flow",
-    version="19.07.56",
+    version="19.07.62",
     author="Gabriel Rosales",
     author_email="gabriel.alejandro.rosales@gmail.com",
     description="Create and upload new packages to PyPI within seconds.",
@@ -38,6 +38,9 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     scripts=[f'cmdline\\{file}' for file in filesInFolder('cmdline/',"*")],
+    entry_points={
+              'console_scripts': ['cascade = pypi_flow.cascade:main'] # "name_of_executable = module.with:function_to_execute"
+          },
     install_requires=[],
     include_package_data=True,
 )
