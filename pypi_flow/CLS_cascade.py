@@ -1,7 +1,7 @@
 import datetime, sys, os, shutil
 from pypi_flow import delDotPrefix, filesInFolder, directoryLastValue, File, replaceWords, packageDir
 
-def LicenseCheck(licenseType):
+def LicenseCheck(licenseType, LicenseDict):
     if licenseType == "":
         #Find default option listed in License Dictionary
         for k,v in LicenseDict.items(): 
@@ -15,6 +15,11 @@ def LicenseCheck(licenseType):
 
 def main():
 
+    projectFolder = os.getcwd() 
+    templateSource = packageDir("pypi_flow") + "\\packageTemplate"
+    licenceTemplateFolder = templateSource + '\\LicenseTemplates'
+    LicenseDict = {"0":"None",}
+    
     # UI
     print("\n\nWelcome to the pypi_flow project creator!\n\nA project will be created in this directory based on the following information:\n")
 
@@ -40,7 +45,7 @@ def main():
         else:
             print(f"{k}) {v}")
 
-    project_license = LicenseCheck(input('\nProceed with: '))
+    project_license = LicenseCheck(input('\nProceed with: '), LicenseDict)
     print(f"{project_license}\n")
 
     # REPLACEMENT WORDS DICTIONARY
@@ -87,8 +92,4 @@ def main():
         tempfile.write(content)
 
 if __name__ == "__main__":
-    projectFolder = os.getcwd() 
-    templateSource = packageDir("pypi_flow") + "\\packageTemplate"
-    licenceTemplateFolder = templateSource + '\\LicenseTemplates'
-    LicenseDict = {"0":"None",}
     main()
