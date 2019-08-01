@@ -29,6 +29,7 @@ url = input("project website: ")
 year = str(datetime.datetime.now().year)
 
 LicenceFiles = filesInFolder(licenceTemplateFolder)
+print(LicenceFiles)
 LicenseDict = {"0":"None",}
 i = 1
 for file in LicenceFiles:

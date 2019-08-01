@@ -1,5 +1,9 @@
 import datetime, sys, os, shutil
-from pypi_flow import delDotPrefix, filesInFolder, directoryLastValue, File, replaceWords, packageDir
+# from pypi_flow import delDotPrefix, filesInFolder, directoryLastValue, File, replaceWords, packageDir
+from grtoolkit.File import delDotPrefix, filesInFolder, directoryLastValue, replaceWords
+from grtoolkit.Storage import File, search
+from grtoolkit.Python import packageDir
+
 
 def LicenseCheck(licenseType, LicenseDict):
     if licenseType == "":
@@ -32,7 +36,8 @@ def main():
     year = str(datetime.datetime.now().year)
 
     i = 1
-    LicenceFiles = filesInFolder(licenceTemplateFolder)
+    # LicenceFiles = filesInFolder(licenceTemplateFolder)
+    LicenceFiles = search(licenceTemplateFolder, depth=1)[1]
     for file in LicenceFiles:
         tempfilename = directoryLastValue(file).split(".")[0]
         LicenseDict[str(i)] = tempfilename
